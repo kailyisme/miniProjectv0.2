@@ -1,4 +1,4 @@
-from prompt_toolkit.shortcuts.prompt import PromptSession
+# from prompt_toolkit.shortcuts.prompt import PromptSession
 import src.core as core
 import datetime
 from prompt_toolkit import prompt
@@ -17,6 +17,11 @@ def prompt_mainMenu():
 
 # #Initialize prompt session
 # promptSession = core.initialize_prompt_session()
+
+#Initialize database
+couriers = core.readTable("couriers")
+products = core.readTable("products")
+orders = core.readTable("orders")
 
 if __name__=="__main__":
     while True:
