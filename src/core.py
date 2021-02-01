@@ -1,8 +1,12 @@
 import csv
 import os
+from prompt_toolkit.shortcuts.prompt import PromptSession
 from rich.table import Table
 from rich.console import Console
 from rich.style import Style
+# import prompt_toolkit
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import WordCompleter
 
 #Rich Console Style
 cStyle = Style(bgcolor= "thistle1", color="black")
@@ -21,7 +25,6 @@ def importMenu(nameOfMenu:str, title:str):
         menu.add_column(header, justify = "center", no_wrap = True)
     for eachRow in menuBody:
         menu.add_row(*eachRow)
-    menu.printMenu = lambda: cPrint(menu)
     return menu
 
 def readTable(nameOfTable:str):   #takes a name of table (path of table) to read
@@ -56,8 +59,24 @@ def readMenu(nameOfMenu:str):
 def clearTerm():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def promptUser(promptText=""):
-    userInput = input(f"{promptText} >")
+# def initialize_prompt_session():
+#     promptSession = PromptSession()
+#     return promptSession
+
+def initialize_prompt_completer(words_expected:list):
+    word_completer = WordCompleter(words_expected)
+    return word_completer
+
+def initialize_prompt_completer_for_menu(nameOfMenu:str):
+    toDiscard, menuBody = readMenu(nameOfMenu)
+    words_expected = [each[0] for each in menuBody]
+    word_completer = WordCompleter(words_expected)
+    return word_completer
+
+
+def promptUser(prompt, promptText="", my_completer=WordCompleter([])):
+    # userInput = promptSession.prompt(f"{promptText} >")
+    userInput = prompt(f"{promptText} >", completer=my_completer, complete_while_typing=True)
     return userInput.strip()
 
 if __name__=="__main__":
