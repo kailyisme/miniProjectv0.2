@@ -1,31 +1,8 @@
-# from prompt_toolkit.shortcuts.prompt import PromptSession
+import src.ui_handlers as ui
 import src.core as core
-import datetime
-from prompt_toolkit import prompt
 
-#Initialize mainMenu
-mainMenu = core.importMenu("mainMenu", "Main Menu")
-def printMainMenu():
-    core.cPrint(mainMenu)
-
-#Initialize mainMenu prompt
-mainMenu_options = core.initialize_prompt_completer_for_menu("mainMenu")
-promp_text = "Choose/type an option:"
-def prompt_mainMenu():
-    userInput = core.promptUser(prompt, promp_text, mainMenu_options)
-    return userInput
-
-# #Initialize prompt session
-# promptSession = core.initialize_prompt_session()
-
-#Initialize database
-couriers = core.readTable("couriers")
-products = core.readTable("products")
-orders = core.readTable("orders")
-
-if __name__=="__main__":
-    while True:
-        core.clearTerm()
-        printMainMenu()
-        # core.promptUser(promptSession, "Choose/type an option:")
-        prompt_mainMenu()
+while True: #Main menu loop
+    ui.clear_Term()
+    core.print_Main_Menu()
+    user_input = core.prompt_Main_Menu()
+    core.main_menu_logic(user_input)

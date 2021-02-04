@@ -1,0 +1,8 @@
+Option,Description
+couriers,Access couriers list
+products,Access products list
+order,Add an order
+view,View orders
+change,Change existing orders
+save,Save DB
+exit,Exit without saving

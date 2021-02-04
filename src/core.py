@@ -1,87 +1,61 @@
-import csv
+import src.ui_handlers as ui
+import src.file_handlers as file_io
 import os
-from prompt_toolkit.shortcuts.prompt import PromptSession
-from rich.table import Table
-from rich.console import Console
-from rich.style import Style
-# import prompt_toolkit
-from prompt_toolkit import prompt
-from prompt_toolkit.completion import WordCompleter
+# import datetime
 
-#Rich Console Style
-cStyle = Style(bgcolor= "thistle1", color="black")
-#Rich Console Initializer
-c = Console()
+#Table keys
+COURIERS_KEYS = ["name","phone"]
+PRODUCTS_KEYS = ["name","price"]
+ORDERS_KEYS = ["time","customer_name","customer_address","customer_phone","courier","status","items"]
 
-def cPrint(whatToPrint):
-    c.print(whatToPrint, style=cStyle, justify="center")
+#Initialize mainMenu
+mainMenu = ui.import_Menu("mainMenu", "Main Menu")
+def print_Main_Menu():
+    ui.c_Print(mainMenu)
 
-def importMenu(nameOfMenu:str, title:str):
-    #Importing menu from file (csv)
-    menuHeaders, menuBody = readMenu(nameOfMenu)
-    #Construct Rich Table of the Menu
-    menu = Table(title = title)
-    for header in menuHeaders:
-        menu.add_column(header, justify = "center", no_wrap = True)
-    for eachRow in menuBody:
-        menu.add_row(*eachRow)
-    return menu
+#Initialize mainMenu prompt
+main_Menu_options = ui.initialize_Prompt_Completer_From_Menu("mainMenu")
+prompt_text = "Choose/type an option:"
+def prompt_Main_Menu():
+    user_input = ui.prompt_User(prompt_text, main_Menu_options)
+    return user_input
 
-def readTable(nameOfTable:str):   #takes a name of table (path of table) to read
-    theTable = []
-    pathOfTable = f"data/{nameOfTable}.csv"
-    with open(pathOfTable) as file:
-        csvReader = csv.DictReader(file)
-        theTable = [rows for rows in csvReader]
-    return theTable
+#Initialize subMenu for couriers and products
+sub_menu_options_list = ui.import_List_Options("submenu")
+sub_menu_options = ui.initialize_Prompt_Completer(sub_menu_options_list)
+def prompt_sub_menu():
+    user_input = ui.prompt_User(prompt_text, sub_menu_options)
+    return user_input
 
-def writeTable(nameOfTable:str, tableInList:list, tableHeaders= []):
-    pathOfTable = f"data/{nameOfTable}.csv"
-    if tableHeaders == []:
-        tableHeaders = [header for header in tableInList[0].keys()]
-    with open(pathOfTable, "w", newline="") as file:
-        csvWriter = csv.DictWriter(file, tableHeaders)
-        csvWriter.writeheader()
-        # csvWriter.writerows(tableInList)
-        for row in tableInList:
-            csvWriter.writerow(row)
+#Initialize database
+state = {
+    "couriers": file_io.read_Table("couriers"),
+    "products": file_io.read_Table("products"),
+    "orders": file_io.read_Table("orders")
+}
 
-def readMenu(nameOfMenu:str):
-    pathOfMenu = f"data/{nameOfMenu}.csv"
-    with open(pathOfMenu) as file:
-        csvReader = csv.reader(file)
-        wholeMenu = [rows for rows in csvReader]
-        menuHeaders = wholeMenu[0]
-        menuBody = wholeMenu[1:]
-    return menuHeaders, menuBody
-        
+#Initialize yes/no completer
+yes_no_completer = ui.initialize_Prompt_Completer(["yes", "no"])
 
-def clearTerm():
-    os.system('cls' if os.name == 'nt' else 'clear')
+def save_state(state):
+    file_io.write_Table("couriers", state["couriers"], COURIERS_KEYS)
+    file_io.write_Table("products", state["products"], PRODUCTS_KEYS)
+    file_io.write_Table("orders", state["orders"], ORDERS_KEYS)
+    # for each_table in state.keys():
+    #     file_io.write_Table(each_table, state[each_table])
 
-# def initialize_prompt_session():
-#     promptSession = PromptSession()
-#     return promptSession
+def save_option():
+    save_state(state)
+    ui.clear_Term()
+    ui.c_Print("Saved")
+    ui.prompt_User("Press Enter")
 
-def initialize_prompt_completer(words_expected:list):
-    word_completer = WordCompleter(words_expected)
-    return word_completer
-
-def initialize_prompt_completer_for_menu(nameOfMenu:str):
-    toDiscard, menuBody = readMenu(nameOfMenu)
-    words_expected = [each[0] for each in menuBody]
-    word_completer = WordCompleter(words_expected)
-    return word_completer
-
-
-def promptUser(prompt, promptText="", my_completer=WordCompleter([])):
-    # userInput = promptSession.prompt(f"{promptText} >")
-    userInput = prompt(f"{promptText} >", completer=my_completer, complete_while_typing=True)
-    return userInput.strip()
-
-if __name__=="__main__":
-    pass
-    # if promptUser("Would you like to backup tables?(Y/N)\n").lower() == "y":
-    #     writeTable("orders_backup", readTable("orders"))
-    #     writeTable("couriers_backup", readTable("couriers"))
-    #     writeTable("products_backup", readTable("products"))
+def main_menu_logic(user_input):
+    if user_input == "save":
+        save_option()
+    elif user_input == "exit":
+        ui.clear_Term()
+        if not ui.prompt_User("Would you not like to save?\n", yes_no_completer) == "no":
+            save_option()
+        ui.clear_Term()
+        exit()
