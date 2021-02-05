@@ -5,7 +5,7 @@
 - [ ] SubMenu Functions
     - [x] Show table
     - [x] Add to table
-    - [ ] Update item on table
+    - [x] Update item on table
     - [ ] Remove item from table
 - [x] Apply SubMenu to Couriers
 - [x] Apply SubMenu to Products

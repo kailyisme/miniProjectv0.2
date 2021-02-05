@@ -1,7 +1,7 @@
 import src.ui_handlers as ui
 import src.file_handlers as file_io
 # import datetime
-from src.constants import COURIERS_KEYS, PRODUCTS_KEYS, ORDERS_KEYS
+# from src.constants import COURIERS_KEYS, PRODUCTS_KEYS, ORDERS_KEYS
 
 #Initialize mainMenu
 mainMenu = ui.import_Menu("mainMenu", "Main Menu")
@@ -67,18 +67,33 @@ def main_menu():
             exit()
 
 #Sub menu options if-else
-def sub_menu(state, table):
+def sub_menu(state, table_name):
     while True:
         ui.clear_Term()
-        print_sub_menu(table)
+        print_sub_menu(table_name)
         user_input = prompt_sub_menu()
         if user_input == "show":
             ui.clear_Term()
-            ui.print_table(state, table)
+            ui.print_table(state, table_name)
             ui.prompt_User("Press Enter")
         elif user_input == "add":
             ui.clear_Term()
-            ui.c_Print(f"Please input the following details for a new {table[:-1]}")
-            state[table].append(ui.prompt_row(COURIERS_KEYS if table == "couriers" else PRODUCTS_KEYS))
+            ui.c_Print(f"Please input the following details for a new {table_name[:-1]}")
+            state[table_name].append(ui.prompt_row(table_name))
+            ui.clear_Term()
+            ui.c_Print(f"Appended {state[table_name][-1]}")
+            ui.prompt_User("Press Enter")
+        elif user_input == "update":
+            ui.clear_Term()
+            ui.print_table(state, table_name, True)
+            user_input = None
+            while not user_input in range(len(state[table_name])):
+                user_input = int(ui.prompt_User("Which row number would you like to update"))
+            ui.clear_Term()
+            ui.c_Print(f"Please input new details for {state[table_name][user_input]['name']}")
+            ui.prompt_update_row(state, table_name, user_input)
+            ui.clear_Term()
+            ui.c_Print(f"Updated row {state[table_name][user_input]}")
+            ui.prompt_User("Press Enter")
         elif user_input == "return":
             break

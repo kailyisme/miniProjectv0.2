@@ -6,7 +6,17 @@ from rich.style import Style
 # from prompt_toolkit.shortcuts.prompt import PromptSession
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
-from src.constants import COURIERS_KEYS, PRODUCTS_KEYS
+from src.constants import COURIERS_KEYS, ORDERS_KEYS, PRODUCTS_KEYS
+
+def get_keys(table_name):
+    keys = []
+    if table_name == "couriers":
+        keys = COURIERS_KEYS
+    elif table_name == "products":
+        keys = PRODUCTS_KEYS
+    elif table_name == "orders":
+        keys = ORDERS_KEYS
+    return keys
 
 #Rich Console Style
 c_Style = Style(bgcolor= "thistle1", color="black")
@@ -84,26 +94,42 @@ def prompt_User(prompt_Text="", my_completer=WordCompleter([]), prompt=prompt):
 #     grid.add_column(*list_elements)
 
 #View a table function
-def print_table(state, table_name):
-    keys = []
-    if table_name == "couriers":
-        keys = COURIERS_KEYS
-    elif table_name == "products":
-        keys = PRODUCTS_KEYS
+def print_table(state, table_name, enum=False):
+    keys = get_keys(table_name)
     table = Table(title=table_name)
-    for each in keys:
-        table.add_column(each, justify = "center", no_wrap = True)
-    for line in state[table_name]:
-        row = []
-        for key in keys:
-            row.append(line[key])
-        table.add_row(*row)
+    if enum == False:
+        for each in keys:
+            table.add_column(each, justify = "center", no_wrap = True)
+        for line in state[table_name]:
+            row = []
+            for key in keys:
+                row.append(line[key])
+            table.add_row(*row)
+    else:
+        table.add_column("#", justify = "center", no_wrap = True)
+        for each in keys:
+            table.add_column(each, justify = "center", no_wrap = True)
+        for num, line in enumerate(state[table_name]):
+            row = [str(num)]
+            for key in keys:
+                row.append(line[key])
+            table.add_row(*row)
     c_Print(table)
 
 #Prompt user for row details
-def prompt_row(keys):
+def prompt_row(table_name):
+    keys = get_keys(table_name)
     # row = {}
     # for each in keys:
     #     row[each] = prompt_User(each)
     row = {each:prompt_User(each) for each in keys}
     return row
+
+def prompt_update_row(state, table_name, index):
+    keys = get_keys(table_name)
+    for each in keys:
+        user_input = prompt_User(each, initialize_Prompt_Completer([state[table_name][index][each]]))
+        if user_input == "":
+            pass
+        else:
+            state[table_name][index][each] = str(user_input)
