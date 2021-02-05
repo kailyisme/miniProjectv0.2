@@ -1,6 +1,8 @@
 import csv
 import src.ui_handlers as ui
+from src.constants import COURIERS_KEYS, PRODUCTS_KEYS, ORDERS_KEYS
 
+#Read table from CSV file
 def read_Table(name_Of_Table:str):
     the_Table = []
     path_Of_Table = f"data/{name_Of_Table}.csv"
@@ -12,6 +14,7 @@ def read_Table(name_Of_Table:str):
         pass
     return the_Table
 
+#Write table to CSV file
 def write_Table(name_Of_Table:str, table_In_List:list, table_Headers):
     path_Of_Table = f"data/{name_Of_Table}.csv"
     # if table_Headers == []:
@@ -22,6 +25,14 @@ def write_Table(name_Of_Table:str, table_In_List:list, table_Headers):
         # csv_Writer.writerows(tableInList)
         for row in table_In_List:
             csv_Writer.writerow(row)
+
+#Save database
+def save_state(state):
+    write_Table("couriers", state["couriers"], COURIERS_KEYS)
+    write_Table("products", state["products"], PRODUCTS_KEYS)
+    write_Table("orders", state["orders"], ORDERS_KEYS)
+    # for each_table in state.keys():
+    #     write_Table(each_table, state[each_table])
 
 if __name__=="__main__":
     # pass

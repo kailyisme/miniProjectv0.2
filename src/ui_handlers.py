@@ -99,3 +99,11 @@ def print_table(state, table_name):
             row.append(line[key])
         table.add_row(*row)
     c_Print(table)
+
+#Prompt user for row details
+def prompt_row(keys):
+    # row = {}
+    # for each in keys:
+    #     row[each] = prompt_User(each)
+    row = {each:prompt_User(each) for each in keys}
+    return row

@@ -42,17 +42,9 @@ state = {
 #Initialize yes/no completer
 yes_no_completer = ui.initialize_Prompt_Completer(["yes", "no"])
 
-#Save database
-def save_state(state):
-    file_io.write_Table("couriers", state["couriers"], COURIERS_KEYS)
-    file_io.write_Table("products", state["products"], PRODUCTS_KEYS)
-    file_io.write_Table("orders", state["orders"], ORDERS_KEYS)
-    # for each_table in state.keys():
-    #     file_io.write_Table(each_table, state[each_table])
-
 #Saving database routine
 def save_option(state):
-    save_state(state)
+    file_io.save_state(state)
     ui.clear_Term()
     ui.c_Print("Saved")
     ui.prompt_User("Press Enter")
@@ -84,5 +76,9 @@ def sub_menu(state, table):
             ui.clear_Term()
             ui.print_table(state, table)
             ui.prompt_User("Press Enter")
+        elif user_input == "add":
+            ui.clear_Term()
+            ui.c_Print(f"Please input the following details for a new {table[:-1]}")
+            state[table].append(ui.prompt_row(COURIERS_KEYS if table == "couriers" else PRODUCTS_KEYS))
         elif user_input == "return":
             break
