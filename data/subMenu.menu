@@ -1,5 +1,6 @@
-Option
-show
-add
-update
-remove
+Option,Description
+show,View table
+add,Add to the table
+update,Update item on table
+remove,Remove item from table
+return,Return to main Menu

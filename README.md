@@ -2,3 +2,17 @@
 
 - [x] Separate logic from file_handlers and UI
 - [x] Not depending on pre-existing DB
+- [ ] SubMenu Functions
+    - [x] Show table
+    - [ ] Add to table
+    - [ ] Update item on table
+    - [ ] Remove item from table
+- [x] Apply SubMenu to Couriers
+- [x] Apply SubMenu to Products
+- [ ] Add order function
+- [ ] View orders
+- [ ] Change order status
+- [x] Save function
+- [x] Commented code
+- [ ] Tested code
+- [ ] List orders by status or couriers

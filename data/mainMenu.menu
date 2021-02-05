@@ -3,6 +3,6 @@ couriers,Access couriers list
 products,Access products list
 order,Add an order
 view,View orders
-change,Change existing orders
+change,Change existing order's status
 save,Save DB
 exit,Exit without saving
