@@ -95,5 +95,17 @@ def sub_menu(state, table_name):
             ui.clear_Term()
             ui.c_Print(f"Updated row {state[table_name][user_input]}")
             ui.prompt_User("Press Enter")
+        elif user_input == "remove":
+            ui.clear_Term()
+            ui.print_table(state, table_name, True)
+            user_input = None
+            while not user_input in range(len(state[table_name])):
+                user_input = int(ui.prompt_User("Which row number would you like to remove"))
+            ui.clear_Term()
+            ui.c_Print(f"You sure you would like to remove {state[table_name][user_input]}")
+            if ui.prompt_User("Yes/No", yes_no_completer) == "yes":
+                ui.clear_Term()
+                ui.c_Print(f"Removed {state[table_name].pop(user_input)}")
+                ui.prompt_User("Press Enter")
         elif user_input == "return":
             break
