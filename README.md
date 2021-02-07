@@ -2,11 +2,11 @@
 
 - [x] Separate logic from file_handlers and UI
 - [x] Not depending on pre-existing DB
-- [ ] SubMenu Functions
+- [x] SubMenu Functions
     - [x] Show table
     - [x] Add to table
     - [x] Update item on table
-    - [ ] Remove item from table
+    - [x] Remove item from table
 - [x] Apply SubMenu to Couriers
 - [x] Apply SubMenu to Products
 - [ ] Add order function
