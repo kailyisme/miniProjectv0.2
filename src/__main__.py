@@ -1,5 +1,4 @@
-import src.ui_handlers as ui
 import src.core as core
 
-#start
+# start
 core.main_menu()

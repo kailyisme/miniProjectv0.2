@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  # app:
+  #   image: miniproject
+  #   container_name: miniproject_container
+  #   environment:
+  #     PYTHONPATH: '/usr/app/'
+  db:
+    image: mysql
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_PASSWORD}"
+    ports:
+      - "3306:3306"
+    volumes:
+      - my_db:/var/lib/mysql
+  adminer:
+    image: adminer
+    container_name: adminer_container
+    ports:
+      - 8080:8080
+volumes:
+  my_db:

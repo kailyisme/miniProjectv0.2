@@ -1,8 +1,7 @@
 Option,Description
-couriers,Access couriers list
-products,Access products list
-order,Add an order
-view,View orders
-change,Change existing order's status
-save,Save DB
-exit,Exit without saving
+courier,Access courier list
+product,Access product list
+customer,Access customer list
+order,Access order menu
+save,Save DB to CSV
+exit,Exit

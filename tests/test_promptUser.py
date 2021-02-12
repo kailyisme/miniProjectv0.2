@@ -1,8 +1,5 @@
 from src.ui_handlers import prompt_User
 
-# class Empty:
-#     pass
-
 def test():
     #assemble test
     mock_inputText = "  aTest  "
