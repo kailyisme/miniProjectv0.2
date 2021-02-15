@@ -9,10 +9,6 @@ from prompt_toolkit.completion import WordCompleter
 import src.constants as constants
 
 
-def get_keys(table_name):
-    return constants.TABLE_KEYS[f"{table_name.upper()}_KEYS"]
-
-
 # Rich Console Style
 c_Style = Style(bgcolor="thistle1", color="black")
 # Rich Console Initializer
@@ -83,7 +79,7 @@ def prompt_User(prompt_Text="", my_completer=WordCompleter([]), prompt=prompt):
 
 # View a table function
 def print_table(state, table_name, enum=False):
-    keys = get_keys(table_name)
+    keys = constants.get_keys(table_name)
     table = Table(title=table_name)
     if enum == False:
         for each in keys:
@@ -94,7 +90,7 @@ def print_table(state, table_name, enum=False):
                 try:
                     row.append(str(line[key]))
                 except:
-                    row.append("")
+                    row.append(None)
             table.add_row(*row)
     else:
         table.add_column("#", justify="center", no_wrap=True)
@@ -106,21 +102,21 @@ def print_table(state, table_name, enum=False):
                 try:
                     row.append(str(line[key]))
                 except:
-                    row.append("")
+                    row.append(None)
             table.add_row(*row)
     c_Print(table)
 
 
 # Prompt user for row details
 def prompt_row(table_name):
-    keys = get_keys(table_name)
+    keys = constants.get_keys(table_name)
     row = {each: prompt_User(each) for each in keys if each != f"{table_name}_id"}
     return row
 
 
 # Prompt user for updated row details
 def prompt_update_row(state, table_name, index):
-    keys = get_keys(table_name)
+    keys = constants.get_keys(table_name)
     for each in keys:
         user_input = prompt_User(
             each, initialize_Prompt_Completer([state[table_name][index][each]])

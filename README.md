@@ -25,7 +25,7 @@ On root of the project folder run
 - [x] Not depending on pre-existing DB
 - [x] SubMenu Functions
     - [x] Show table
-    - [ ] Add to table
+    - [x] Add to table
     - [ ] Update item on table
     - [ ] Remove item from table
 - [x] Apply SubMenu to Couriers
@@ -33,6 +33,7 @@ On root of the project folder run
 - [x] Apply SubMenu to Customers
 - [ ] Validating user input for SubMenu
 - [ ] Order menu
+  - [ ] Add uuid for order_id (transaction_id)
   - [ ] Add order function
   - [ ] Basket menu
     - [ ] Add basket entry
@@ -42,8 +43,10 @@ On root of the project folder run
   - [ ] Change order status
   - [ ] Update order details
   - [ ] Remove order
-- [x] Save function
+- [x] Save function / export DB in CSV format
+- [ ] Load function / import DB in CSV format
 - [x] Commented code
 - [ ] Change existing tests with dependencies injection with patch
 - [ ] Tested code
 - [ ] List orders by status or couriers
+- [ ] Track product inventory

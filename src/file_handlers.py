@@ -17,8 +17,6 @@ def read_Table(name_Of_Table: str):
 # Write table to CSV file
 def write_Table(name_Of_Table: str, table_in_list: list, table_Headers):
     path_Of_Table = f"data/{name_Of_Table}.csv"
-    # if table_Headers == []:
-    #     table_Headers = [header for header in table_in_list[0].keys()]
     with open(path_Of_Table, "w", newline="") as file:
         csv_Writer = csv.DictWriter(file, table_Headers)
         csv_Writer.writeheader()
@@ -31,5 +29,5 @@ def write_Table(name_Of_Table: str, table_in_list: list, table_Headers):
 def save_state(state):
     for table_name in state.keys():
         write_Table(
-            table_name, state[table_name], constants.TABLE_KEYS[f"{table_name}_KEYS"]
+            table_name, state[table_name], constants.get_keys(table_name)
         )

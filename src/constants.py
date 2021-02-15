@@ -45,3 +45,6 @@ VARIABLE_DB_TYPES = {
     "status": "varchar(30)",
     "amount": "int",
 }
+
+def get_keys(table_name):
+    return TABLE_KEYS[f"{table_name.upper()}_KEYS"]

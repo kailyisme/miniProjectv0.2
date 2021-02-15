@@ -55,6 +55,18 @@ def query(conn, sql, values=[]):
         return result
 
 
+def auto_commit(conn, sql, values=[]):
+    with conn.cursor() as cursor:
+        cursor.execute(sql, values)
+        conn.commit()
+
+def get_highest_id(conn, table_name):
+    sql_query = f"SELECT * FROM {table_name} ORDER BY {table_name}_id DESC"
+    with conn.cursor() as cursor:
+        cursor.execute(sql_query)
+        result = cursor.fetchone()
+        return result
+
 def select_all_from_table(conn, table_name):
     sql_query = f"SELECT * FROM {table_name}"
     try:
@@ -64,7 +76,7 @@ def select_all_from_table(conn, table_name):
             print("Table not found")
             sql_query = f"CREATE TABLE {table_name}"
             table_query = ""
-            for key in constants.TABLE_KEYS[f"{table_name.upper()}_KEYS"]:
+            for key in constants.get_keys(table_name):
                 if key.split("_")[-1] == "id":
                     if key.split("_")[0] == table_name:
                         table_query += f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]} NOT NULL AUTO_INCREMENT PRIMARY KEY,"
@@ -82,3 +94,12 @@ def select_all_from_table(conn, table_name):
         else:
             print(e)
             exit()
+
+#Add row to table in DB
+def insert_into_table(conn, table_name, values):
+    table_keys = list(values.keys())
+    vars_amount = ""
+    for each in table_keys:
+        vars_amount += "%s,"
+    vars_amount = vars_amount[:-1]
+    auto_commit(conn, f"INSERT INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})", tuple(values[key] for key in table_keys))
