@@ -60,12 +60,6 @@ def auto_commit(conn, sql, values=[]):
         cursor.execute(sql, values)
         conn.commit()
 
-def get_highest_id(conn, table_name):
-    sql_query = f"SELECT * FROM {table_name} ORDER BY {table_name}_id DESC"
-    with conn.cursor() as cursor:
-        cursor.execute(sql_query)
-        result = cursor.fetchone()
-        return result
 
 def select_all_from_table(conn, table_name):
     sql_query = f"SELECT * FROM {table_name}"
@@ -95,11 +89,42 @@ def select_all_from_table(conn, table_name):
             print(e)
             exit()
 
-#Add row to table in DB
+
+# Add row to table in DB
 def insert_into_table(conn, table_name, values):
     table_keys = list(values.keys())
     vars_amount = ""
     for each in table_keys:
         vars_amount += "%s,"
     vars_amount = vars_amount[:-1]
-    auto_commit(conn, f"INSERT INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})", tuple(values[key] for key in table_keys))
+    auto_commit(
+        conn,
+        f"INSERT INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})",
+        tuple(values[key] for key in table_keys),
+    )
+
+
+def get_highest_id(conn, table_name):
+    return query(
+        conn, f"SELECT * FROM {table_name} ORDER BY {table_name}_id DESC LIMIT 1"
+    )
+
+
+# Update row in table in DB
+def update_row_on_table(conn, table_name, values, id):
+    keys_to_update = list(values.keys())
+    values_to_update = tuple(values[each] for each in keys_to_update)
+    set_string = ""
+    for key in keys_to_update:
+        set_string += f"{key}=%s,"
+    set_string = set_string[:-1]
+    auto_commit(
+        conn,
+        f"UPDATE {table_name} SET {set_string} WHERE {table_name}_id = {id}",
+        values_to_update,
+    )
+
+
+# Retrieve entry/row for {table_name}_id
+def retrieve_row_for_id(conn, table_name, id):
+    return query(conn, f"SELECT * FROM {table_name} WHERE {table_name}_id = %s", id)[0]

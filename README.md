@@ -26,12 +26,13 @@ On root of the project folder run
 - [x] SubMenu Functions
     - [x] Show table
     - [x] Add to table
-    - [ ] Update item on table
+    - [x] Update item on table
     - [ ] Remove item from table
 - [x] Apply SubMenu to Couriers
 - [x] Apply SubMenu to Products
 - [x] Apply SubMenu to Customers
 - [ ] Validating user input for SubMenu
+- [ ] 
 - [ ] Order menu
   - [ ] Add uuid for order_id (transaction_id)
   - [ ] Add order function

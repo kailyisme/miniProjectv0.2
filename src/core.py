@@ -86,7 +86,8 @@ def main_menu():
             ui.clear_Term()
             exit()
 
-#Add to table
+
+# Add to table
 def add_row_to_table(table_name):
     ui.clear_Term()
     ui.c_Print(f"Please input the following details for a new {table_name}")
@@ -96,6 +97,25 @@ def add_row_to_table(table_name):
     ui.clear_Term()
     ui.c_Print(f"Appended {state[table_name][-1]}")
     ui.prompt_User("Press Enter")
+
+
+# Update row on table
+def update_row_on_table(table_name):
+    ui.clear_Term()
+    ui.print_table(state, table_name, True)
+    row_index = None
+    while not row_index in range(len(state[table_name])):
+        row_index = int(ui.prompt_User("Which row number would you like to update"))
+    ui.clear_Term()
+    ui.c_Print(f"Please input new details for {state[table_name][row_index]}")
+    new_row = ui.prompt_update_row(state, table_name, row_index)
+    row_id = state[table_name][row_index][f"{table_name}_id"]
+    db.update_row_on_table(conn, table_name, new_row, row_id)
+    state[table_name][row_index] = db.retrieve_row_for_id(conn, table_name, row_id)
+    ui.clear_Term()
+    ui.c_Print(f"Updated row {state[table_name][row_index]}")
+    ui.prompt_User("Press Enter")
+
 
 # Sub menu options if-else
 def sub_menu(state, table_name):
@@ -110,21 +130,7 @@ def sub_menu(state, table_name):
         elif user_input == "add":
             add_row_to_table(table_name)
         elif user_input == "update":
-            ui.clear_Term()
-            ui.print_table(state, table_name, True)
-            user_input = None
-            while not user_input in range(len(state[table_name])):
-                user_input = int(
-                    ui.prompt_User("Which row number would you like to update")
-                )
-            ui.clear_Term()
-            ui.c_Print(
-                f"Please input new details for {state[table_name][user_input]['name']}"
-            )
-            ui.prompt_update_row(state, table_name, user_input)
-            ui.clear_Term()
-            ui.c_Print(f"Updated row {state[table_name][user_input]}")
-            ui.prompt_User("Press Enter")
+            update_row_on_table(table_name)
         elif user_input == "remove":
             ui.clear_Term()
             ui.print_table(state, table_name, True)

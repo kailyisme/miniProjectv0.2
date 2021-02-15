@@ -117,6 +117,8 @@ def prompt_row(table_name):
 # Prompt user for updated row details
 def prompt_update_row(state, table_name, index):
     keys = constants.get_keys(table_name)
+    keys = [each for each in keys if each != f"{table_name}_id"]
+    row = {}
     for each in keys:
         user_input = prompt_User(
             each, initialize_Prompt_Completer([state[table_name][index][each]])
@@ -124,4 +126,5 @@ def prompt_update_row(state, table_name, index):
         if user_input == "":
             pass
         else:
-            state[table_name][index][each] = str(user_input)
+            row[each] = user_input
+    return row
