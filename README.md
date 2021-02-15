@@ -8,7 +8,7 @@ Add .env file to run with the following details
 - MYSQL_PORT (port to MySQL Server; 3306 default)
 - MYSQL_PASSWORD
 - MYSQL_USER
-- DB (Database name you would like to use for app; no need to pre-initalize it)
+- DB (Database name you would like to use for app; no need to pre-initialize it)
 
 On root of the project folder run
 * 'python -m venv .venv'

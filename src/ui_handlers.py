@@ -91,7 +91,10 @@ def print_table(state, table_name, enum=False):
         for line in state[table_name]:
             row = []
             for key in keys:
-                row.append(str(line[key]))
+                try:
+                    row.append(str(line[key]))
+                except:
+                    row.append("")
             table.add_row(*row)
     else:
         table.add_column("#", justify="center", no_wrap=True)
@@ -100,7 +103,10 @@ def print_table(state, table_name, enum=False):
         for num, line in enumerate(state[table_name]):
             row = [str(num)]
             for key in keys:
-                row.append(str(line[key]))
+                try:
+                    row.append(str(line[key]))
+                except:
+                    row.append("")
             table.add_row(*row)
     c_Print(table)
 
@@ -108,7 +114,7 @@ def print_table(state, table_name, enum=False):
 # Prompt user for row details
 def prompt_row(table_name):
     keys = get_keys(table_name)
-    row = {each: prompt_User(each) for each in keys}
+    row = {each: prompt_User(each) for each in keys if each != f"{table_name}_id"}
     return row
 
 

@@ -60,11 +60,11 @@ state = {
 # Initialize yes/no completer
 yes_no_completer = ui.initialize_Prompt_Completer(["yes", "no"])
 
-# Saving database routine
+# Saving database routine to CSV
 def save_option(state):
     file_io.save_state(state)
     ui.clear_Term()
-    ui.c_Print("Saved")
+    ui.c_Print("Saved to data")
     ui.prompt_User("Press Enter")
 
 
@@ -86,6 +86,16 @@ def main_menu():
             ui.clear_Term()
             exit()
 
+#Add to table
+def add_row_to_table(table_name):
+    ui.clear_Term()
+    ui.c_Print(f"Please input the following details for a new {table_name}")
+    new_row = ui.prompt_row(table_name)
+    # db.query(conn, f"INSERT INTO {table_name}({})")
+    state[table_name].append(new_row)
+    ui.clear_Term()
+    ui.c_Print(f"Appended {state[table_name][-1]}")
+    ui.prompt_User("Press Enter")
 
 # Sub menu options if-else
 def sub_menu(state, table_name):
@@ -98,12 +108,7 @@ def sub_menu(state, table_name):
             ui.print_table(state, table_name)
             ui.prompt_User("Press Enter")
         elif user_input == "add":
-            ui.clear_Term()
-            ui.c_Print(f"Please input the following details for a new {table_name}")
-            state[table_name].append(ui.prompt_row(table_name))
-            ui.clear_Term()
-            ui.c_Print(f"Appended {state[table_name][-1]}")
-            ui.prompt_User("Press Enter")
+            add_row_to_table(table_name)
         elif user_input == "update":
             ui.clear_Term()
             ui.print_table(state, table_name, True)
