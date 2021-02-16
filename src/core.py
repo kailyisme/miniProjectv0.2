@@ -87,7 +87,6 @@ def main_menu():
             exit()
 
 
-# Add to table
 def add_row_to_table(table_name):
     ui.clear_Term()
     ui.c_Print(f"Please input the following details for a new {table_name}")
@@ -99,10 +98,9 @@ def add_row_to_table(table_name):
     ui.prompt_User("Press Enter")
 
 
-# Update row on table
 def update_row_on_table(table_name):
     ui.clear_Term()
-    ui.print_table(state, table_name, True)
+    ui.print_table(state[table_name], table_name, True)
     row_index = None
     while not row_index in range(len(state[table_name])):
         row_index = int(ui.prompt_User("Which row number would you like to update"))
@@ -117,6 +115,23 @@ def update_row_on_table(table_name):
     ui.prompt_User("Press Enter")
 
 
+def remove_row_from_table(table_name):
+    ui.clear_Term()
+    ui.print_table(state[table_name], table_name, True)
+    user_input = None
+    while not user_input in range(len(state[table_name])):
+        user_input = int(
+            ui.prompt_User("Which row number would you like to remove")
+        )
+    ui.clear_Term()
+    ui.c_Print(
+        f"You sure you would like to remove {state[table_name][user_input]}"
+    )
+    if ui.prompt_User("Yes/No", yes_no_completer) == "yes":
+        ui.clear_Term()
+        ui.c_Print(f"Removed {state[table_name].pop(user_input)}")
+        ui.prompt_User("Press Enter")
+
 # Sub menu options if-else
 def sub_menu(state, table_name):
     while True:
@@ -125,27 +140,13 @@ def sub_menu(state, table_name):
         user_input = prompt_sub_menu()
         if user_input == "show":
             ui.clear_Term()
-            ui.print_table(state, table_name)
+            ui.print_table(state[table_name], table_name)
             ui.prompt_User("Press Enter")
         elif user_input == "add":
             add_row_to_table(table_name)
         elif user_input == "update":
             update_row_on_table(table_name)
         elif user_input == "remove":
-            ui.clear_Term()
-            ui.print_table(state, table_name, True)
-            user_input = None
-            while not user_input in range(len(state[table_name])):
-                user_input = int(
-                    ui.prompt_User("Which row number would you like to remove")
-                )
-            ui.clear_Term()
-            ui.c_Print(
-                f"You sure you would like to remove {state[table_name][user_input]}"
-            )
-            if ui.prompt_User("Yes/No", yes_no_completer) == "yes":
-                ui.clear_Term()
-                ui.c_Print(f"Removed {state[table_name].pop(user_input)}")
-                ui.prompt_User("Press Enter")
+            remove_row_from_table(table_name)
         elif user_input == "return":
             break

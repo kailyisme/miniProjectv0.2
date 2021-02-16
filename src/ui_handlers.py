@@ -78,13 +78,13 @@ def prompt_User(prompt_Text="", my_completer=WordCompleter([]), prompt=prompt):
 
 
 # View a table function
-def print_table(state, table_name, enum=False):
+def print_table(table, table_name, enum=False):
     keys = constants.get_keys(table_name)
     table = Table(title=table_name)
     if enum == False:
         for each in keys:
             table.add_column(each, justify="center", no_wrap=True)
-        for line in state[table_name]:
+        for line in table:
             row = []
             for key in keys:
                 try:
@@ -96,7 +96,7 @@ def print_table(state, table_name, enum=False):
         table.add_column("#", justify="center", no_wrap=True)
         for each in keys:
             table.add_column(each, justify="center", no_wrap=True)
-        for num, line in enumerate(state[table_name]):
+        for num, line in enumerate(table):
             row = [str(num)]
             for key in keys:
                 try:

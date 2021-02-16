@@ -32,7 +32,6 @@ On root of the project folder run
 - [x] Apply SubMenu to Products
 - [x] Apply SubMenu to Customers
 - [ ] Validating user input for SubMenu
-- [ ] 
 - [ ] Order menu
   - [ ] Add uuid for order_id (transaction_id)
   - [ ] Add order function
@@ -47,7 +46,6 @@ On root of the project folder run
 - [x] Save function / export DB in CSV format
 - [ ] Load function / import DB in CSV format
 - [x] Commented code
-- [ ] Change existing tests with dependencies injection with patch
-- [ ] Tested code
+- [ ] Unit tested code
 - [ ] List orders by status or couriers
 - [ ] Track product inventory
