@@ -118,19 +118,21 @@ def update_row_on_table(table_name):
 def remove_row_from_table(table_name):
     ui.clear_Term()
     ui.print_table(state[table_name], table_name, True)
-    user_input = None
-    while not user_input in range(len(state[table_name])):
-        user_input = int(
-            ui.prompt_User("Which row number would you like to remove")
-        )
+    row_index = None
+    while not row_index in range(len(state[table_name])):
+        row_index = int(ui.prompt_User("Which row number would you like to remove"))
     ui.clear_Term()
+    row_id = state[table_name][row_index][f"{table_name}_id"]
     ui.c_Print(
-        f"You sure you would like to remove {state[table_name][user_input]}"
+        f"You sure you would like to remove ",
+        db.retrieve_row_for_id(conn, table_name, row_id),
     )
     if ui.prompt_User("Yes/No", yes_no_completer) == "yes":
         ui.clear_Term()
-        ui.c_Print(f"Removed {state[table_name].pop(user_input)}")
+        db.delete_row_for_id(conn, table_name, row_id)
+        ui.c_Print("Removed ", state[table_name].pop(row_index))
         ui.prompt_User("Press Enter")
+
 
 # Sub menu options if-else
 def sub_menu(state, table_name):

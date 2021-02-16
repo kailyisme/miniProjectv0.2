@@ -107,7 +107,7 @@ def insert_into_table(conn, table_name, values):
 def get_highest_id(conn, table_name):
     return query(
         conn, f"SELECT * FROM {table_name} ORDER BY {table_name}_id DESC LIMIT 1"
-    )
+    )[0]
 
 
 # Update row in table in DB
@@ -128,3 +128,6 @@ def update_row_on_table(conn, table_name, values, id):
 # Retrieve entry/row for {table_name}_id
 def retrieve_row_for_id(conn, table_name, id):
     return query(conn, f"SELECT * FROM {table_name} WHERE {table_name}_id = %s", id)[0]
+
+def delete_row_for_id(conn, table_name, id):
+    auto_commit(conn, f"DELETE FROM {table_name} WHERE {table_name}_id=%s", id)

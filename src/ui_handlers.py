@@ -15,8 +15,8 @@ c_Style = Style(bgcolor="thistle1", color="black")
 c = Console()
 
 # Initialize print function with custom c_Style
-def c_Print(what_To_Print):
-    c.print(what_To_Print, style=c_Style, justify="center")
+def c_Print(*what_To_Print):
+    c.print(*what_To_Print, style=c_Style, justify="center")
 
 
 # Read menu from file
@@ -78,13 +78,13 @@ def prompt_User(prompt_Text="", my_completer=WordCompleter([]), prompt=prompt):
 
 
 # View a table function
-def print_table(table, table_name, enum=False):
+def print_table(table_to_print, table_name, enum=False):
     keys = constants.get_keys(table_name)
     table = Table(title=table_name)
     if enum == False:
         for each in keys:
             table.add_column(each, justify="center", no_wrap=True)
-        for line in table:
+        for line in table_to_print:
             row = []
             for key in keys:
                 try:
@@ -96,7 +96,7 @@ def print_table(table, table_name, enum=False):
         table.add_column("#", justify="center", no_wrap=True)
         for each in keys:
             table.add_column(each, justify="center", no_wrap=True)
-        for num, line in enumerate(table):
+        for num, line in enumerate(table_to_print):
             row = [str(num)]
             for key in keys:
                 try:

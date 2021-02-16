@@ -27,7 +27,7 @@ On root of the project folder run
     - [x] Show table
     - [x] Add to table
     - [x] Update item on table
-    - [ ] Remove item from table
+    - [x] Remove item from table
 - [x] Apply SubMenu to Couriers
 - [x] Apply SubMenu to Products
 - [x] Apply SubMenu to Customers
