@@ -31,7 +31,7 @@ On root of the project folder run
 - [x] Apply SubMenu to Couriers
 - [x] Apply SubMenu to Products
 - [x] Apply SubMenu to Customers
-- [ ] Default empty string to "Null"
+- [x] Default empty string to "Null"
 - [ ] Validating user input for SubMenu
 - [ ] Order menu
   <!-- - [ ] Make courier_id and customer_id default to Null when original entries deleted -->
