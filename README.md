@@ -31,8 +31,11 @@ On root of the project folder run
 - [x] Apply SubMenu to Couriers
 - [x] Apply SubMenu to Products
 - [x] Apply SubMenu to Customers
+- [ ] Default empty string to "Null"
 - [ ] Validating user input for SubMenu
 - [ ] Order menu
+  <!-- - [ ] Make courier_id and customer_id default to Null when original entries deleted -->
+  - [ ] Make baskets delete in cascade when original transaction deleted
   - [ ] Add uuid for order_id (transaction_id)
   - [ ] Add order function
   - [ ] Basket menu
@@ -47,5 +50,6 @@ On root of the project folder run
 - [ ] Load function / import DB in CSV format
 - [x] Commented code
 - [ ] Unit tested code
+- [ ] Add "deleted" field to courier, products and customer tables
 - [ ] List orders by status or couriers
 - [ ] Track product inventory

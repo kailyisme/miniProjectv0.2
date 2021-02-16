@@ -110,7 +110,13 @@ def print_table(table_to_print, table_name, enum=False):
 # Prompt user for row details
 def prompt_row(table_name):
     keys = constants.get_keys(table_name)
-    row = {each: prompt_User(each) for each in keys if each != f"{table_name}_id"}
+    ignored_key = f"{table_name}_id"
+    row = {}
+    for key in keys:
+        if key != ignored_key:
+            user_input = prompt_User(key)
+            if user_input != "":
+                row[key] = user_input
     return row
 
 
