@@ -33,11 +33,11 @@ On root of the project folder run
 - [x] Apply SubMenu to Customers
 - [x] Default empty string to "Null"
 - [ ] Validating user input for SubMenu
-- [ ] Order menu
+- [x] Order menu
   <!-- - [ ] Make courier_id and customer_id default to Null when original entries deleted -->
   - [x] Make baskets delete in cascade when original transaction deleted
   - [x] Add uuid for order_id (transaction_id)
-  - [ ] View orders
+  - [x] View orders
   - [ ] Add order function
   - [ ] Basket menu
     - [ ] Add basket entry
@@ -46,6 +46,7 @@ On root of the project folder run
   - [ ] Change order status
   - [ ] Update order details
   - [ ] Remove order
+- [ ] Separate menu's logic by file
 - [x] Save function / export DB in CSV format
 - [ ] Load function / import DB in CSV format
 - [x] Commented code

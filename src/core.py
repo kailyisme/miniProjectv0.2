@@ -2,7 +2,7 @@ import src.ui_handlers as ui
 import src.file_handlers as file_io
 import src.db_handlers as db
 import src.constants as constants
-
+# from uuid import UUID, uuid4
 # import datetime
 
 
@@ -24,7 +24,7 @@ def prompt_Main_Menu():
     return user_input
 
 
-# Initialize subMenu for couriers and products
+# Initialize subMenu for couriers and products and customers
 courier_menu = ui.import_Menu("subMenu", "Courier")
 product_menu = ui.import_Menu("subMenu", "Product")
 customer_menu = ui.import_Menu("subMenu", "Customer")
@@ -45,6 +45,23 @@ sub_menu_options = ui.initialize_Prompt_Completer_From_Menu("subMenu")
 
 def prompt_sub_menu():
     user_input = ui.prompt_User(prompt_text, sub_menu_options)
+    return user_input
+
+
+# Initialize orderMenu
+orderMenu = ui.import_Menu("orderMenu", "Order")
+
+
+def print_order_menu():
+    ui.c_Print(orderMenu)
+
+
+# Initialize orderMenu prompt
+order_menu_options = ui.initialize_Prompt_Completer_From_Menu("orderMenu")
+
+
+def prompt_order_menu():
+    user_input = ui.prompt_User(prompt_text, order_menu_options)
     return user_input
 
 
@@ -80,6 +97,8 @@ def main_menu():
             or user_input == "customer"
         ):
             sub_menu(state, user_input)
+        elif user_input == "order":
+            order_menu(state)
         elif user_input == "save":
             save_option(state)
         elif user_input == "exit":
@@ -150,5 +169,18 @@ def sub_menu(state, table_name):
             update_row_on_table(table_name)
         elif user_input == "remove":
             remove_row_from_table(table_name)
+        elif user_input == "return":
+            break
+
+
+def order_menu(state):
+    while True:
+        ui.clear_Term()
+        print_order_menu()
+        user_input = prompt_order_menu()
+        if user_input == "show":
+            ui.clear_Term()
+            ui.print_table(state["transaction"], "transaction")
+            ui.prompt_User("Press Enter")
         elif user_input == "return":
             break

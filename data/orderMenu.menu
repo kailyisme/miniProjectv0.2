@@ -1,7 +1,7 @@
 Option,Description
+show,View orders
 add,Add an order
 basket,Access order items basket
-view,View orders
 change,Change existing order's status
 update,Update order details
 remove,Remove order
