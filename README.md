@@ -35,7 +35,7 @@ On root of the project folder run
 - [ ] Validating user input for SubMenu
 - [ ] Order menu
   <!-- - [ ] Make courier_id and customer_id default to Null when original entries deleted -->
-  - [ ] Make baskets delete in cascade when original transaction deleted
+  - [x] Make baskets delete in cascade when original transaction deleted
   - [x] Add uuid for order_id (transaction_id)
   - [ ] View orders
   - [ ] Add order function

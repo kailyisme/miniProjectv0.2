@@ -80,7 +80,7 @@ def select_all_from_table(conn, table_name):
                     if key.split("_")[0] == table_name:
                         table_query += f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]} NOT NULL PRIMARY KEY,"
                     else:
-                        table_query += f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]} NOT NULL,CONSTRAINT fk_{key.split('_')[0]} FOREIGN KEY ({key}) REFERENCES {key.split('_')[0]}({key}),"
+                        table_query += f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]} NOT NULL,CONSTRAINT fk_{key.split('_')[0]} FOREIGN KEY ({key}) REFERENCES {key.split('_')[0]}({key}) ON DELETE CASCADE,"
                 else:
                     table_query += (
                         f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]},"
