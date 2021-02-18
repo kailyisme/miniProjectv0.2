@@ -76,6 +76,11 @@ def select_all_from_table(conn, table_name):
                         table_query += f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]} NOT NULL AUTO_INCREMENT PRIMARY KEY,"
                     else:
                         table_query += f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]} NOT NULL,CONSTRAINT fk_{key.split('_')[0]} FOREIGN KEY ({key}) REFERENCES {key.split('_')[0]}({key}),"
+                elif key.split("_")[-1] == "uuid":
+                    if key.split("_")[0] == table_name:
+                        table_query += f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]} NOT NULL PRIMARY KEY,"
+                    else:
+                        table_query += f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]} NOT NULL,CONSTRAINT fk_{key.split('_')[0]} FOREIGN KEY ({key}) REFERENCES {key.split('_')[0]}({key}),"
                 else:
                     table_query += (
                         f"{key} {constants.VARIABLE_DB_TYPES[key.split('_')[-1]]},"
@@ -128,6 +133,7 @@ def update_row_on_table(conn, table_name, values, id):
 # Retrieve entry/row for {table_name}_id
 def retrieve_row_for_id(conn, table_name, id):
     return query(conn, f"SELECT * FROM {table_name} WHERE {table_name}_id = %s", id)[0]
+
 
 def delete_row_for_id(conn, table_name, id):
     auto_commit(conn, f"DELETE FROM {table_name} WHERE {table_name}_id=%s", id)
