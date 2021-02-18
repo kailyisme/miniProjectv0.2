@@ -3,10 +3,10 @@ import os
 from rich.table import Table
 from rich.console import Console
 from rich.style import Style
-
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 import src.constants as constants
+import uuid
 
 
 # Rich Console Style
@@ -87,10 +87,13 @@ def print_table(table_to_print, table_name, enum=False):
         for line in table_to_print:
             row = []
             for key in keys:
-                try:
-                    row.append(str(line[key]))
-                except:
-                    row.append(None)
+                if key.split("_")[1] == "uuid":
+                    row.append(str(uuid.UUID(bytes=line[key])))
+                else:
+                    try:
+                        row.append(str(line[key]))
+                    except:
+                        row.append(None)
             table.add_row(*row)
     else:
         table.add_column("#", justify="center", no_wrap=True)
@@ -99,24 +102,42 @@ def print_table(table_to_print, table_name, enum=False):
         for num, line in enumerate(table_to_print):
             row = [str(num)]
             for key in keys:
-                try:
-                    row.append(str(line[key]))
-                except:
-                    row.append(None)
+                if key.split("_")[1] == "uuid":
+                    row.append(str(uuid.UUID(bytes=line[key])))
+                else:
+                    try:
+                        row.append(str(line[key]))
+                    except:
+                        row.append(None)
             table.add_row(*row)
     c_Print(table)
 
 
 # Prompt user for row details
-def prompt_row(table_name):
+def prompt_row_wo_refs(table_name):
     keys = constants.get_keys(table_name)
-    ignored_key = f"{table_name}_id"
+    ignored_keys = [f"{table_name}_id", f"{table_name}_uuid"]
     row = {}
     for key in keys:
-        if key != ignored_key:
+        if key not in ignored_keys:
             user_input = prompt_User(key)
             if user_input != "":
                 row[key] = user_input
+    return row
+
+
+# Prompt user for order details
+def prompt_row_for_order(customer_table, courier_table):
+    row = {}
+    print_table(customer_table, "customer", True)
+    row["customer_index"] = None
+    while row["customer_index"] not in range(len(customer_table)):
+        row["customer_index"] = int(prompt_User("Which customer #"))
+    clear_Term()
+    print_table(courier_table, "courier", True)
+    row["courier_index"] = None
+    while row["courier_index"] not in range(len(courier_table)):
+        row["courier_index"] = int(prompt_User("Which courier #"))
     return row
 
 

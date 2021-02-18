@@ -2,7 +2,8 @@ import src.ui_handlers as ui
 import src.file_handlers as file_io
 import src.db_handlers as db
 import src.constants as constants
-# from uuid import UUID, uuid4
+import uuid
+
 # import datetime
 
 
@@ -109,7 +110,7 @@ def main_menu():
 def add_row_to_table(table_name):
     ui.clear_Term()
     ui.c_Print(f"Please input the following details for a new {table_name}")
-    new_row = ui.prompt_row(table_name)
+    new_row = ui.prompt_row_wo_refs(table_name)
     db.insert_into_table(conn, table_name, new_row)
     state[table_name].append(db.get_highest_id(conn, table_name))
     ui.clear_Term()
@@ -173,6 +174,21 @@ def sub_menu(state, table_name):
             break
 
 
+def add_order(state):
+    ui.clear_Term()
+    new_row = ui.prompt_row_for_order(state["customer"], state["courier"])
+    db.new_order(
+        conn,
+        state["customer"][new_row["customer_index"]]["customer_id"],
+        state["courier"][new_row["courier_index"]]["courier_id"],
+    )
+    state["transaction"].append(db.get_most_recent_order(conn))
+    ui.clear_Term()
+    ui.c_Print(f"Appended {state['transaction'][-1]}")
+    ui.prompt_User("Press Enter")
+
+
+# Order menu options if-else
 def order_menu(state):
     while True:
         ui.clear_Term()
@@ -182,5 +198,7 @@ def order_menu(state):
             ui.clear_Term()
             ui.print_table(state["transaction"], "transaction")
             ui.prompt_User("Press Enter")
+        elif user_input == "add":
+            add_order(state)
         elif user_input == "return":
             break

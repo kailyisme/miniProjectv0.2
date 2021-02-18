@@ -38,7 +38,7 @@ On root of the project folder run
   - [x] Make baskets delete in cascade when original transaction deleted
   - [x] Add uuid for order_id (transaction_id)
   - [x] View orders
-  - [ ] Add order function
+  - [x] Add order function
   - [ ] Basket menu
     - [ ] Add basket entry
     - [ ] Update basket entry
@@ -54,4 +54,4 @@ On root of the project folder run
 - [ ] Add "deleted" field to courier, products and customer tables
 - [ ] List orders by status or couriers
 - [ ] Track product inventory
-- [ ] Save uuid as binary(16) for performance
+- [x] Save uuid as binary(16) for performance

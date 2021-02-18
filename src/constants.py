@@ -38,7 +38,7 @@ VARIABLE_PYTHON_TYPES = {
 # Variable MySQL types
 VARIABLE_DB_TYPES = {
     "id": "int",
-    "uuid": "varchar(36)",
+    "uuid": "binary(16)",
     "name": "varchar(255)",
     "phone": "varchar(15)",
     "price": "decimal(10,2)",
@@ -47,6 +47,20 @@ VARIABLE_DB_TYPES = {
     "status": "varchar(30)",
     "amount": "int",
 }
+
+# Transaction Statuses
+TRANSACTION_STATUSES = [
+    "Order Received",
+    "Order Accepted",
+    "Preparing",
+    "Ready to Deliver",
+    "With Courier",
+    "Delivered",
+    "Unsuccessful Delivery",
+    "Returned",
+    "Complained",
+]
+
 
 def get_keys(table_name):
     return TABLE_KEYS[f"{table_name.upper()}_KEYS"]

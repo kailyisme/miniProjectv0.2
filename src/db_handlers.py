@@ -1,8 +1,10 @@
 import os
+from dotenv.main import get_key
 import pymysql.err
 import pymysql.cursors
 from dotenv import load_dotenv
 import src.constants as constants
+import uuid
 
 load_dotenv()
 
@@ -137,3 +139,21 @@ def retrieve_row_for_id(conn, table_name, id):
 
 def delete_row_for_id(conn, table_name, id):
     auto_commit(conn, f"DELETE FROM {table_name} WHERE {table_name}_id=%s", id)
+
+
+def new_order(conn, customer_id, courier_id):
+    a_uuid = uuid.uuid4().hex  # uuid.UUID(hex=a_uuid) to pack again from hex to uuid
+    transaction_status = constants.TRANSACTION_STATUSES[0]
+    auto_commit(
+        conn,
+        f"INSERT INTO transaction VALUES (unhex(%s),now(),%s,%s,%s) ",
+        (a_uuid, customer_id, courier_id, transaction_status),
+    )
+
+
+def get_most_recent_order(conn):
+    keys = constants.get_keys("transaction")
+    return query(
+        conn,
+        f"SELECT {','.join(key for key in keys)} FROM transaction ORDER BY transaction_time DESC",
+    )[0]
