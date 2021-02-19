@@ -2,6 +2,7 @@ import src.ui_handlers as ui
 import src.file_handlers as file_io
 import src.db_handlers as db
 import src.constants as constants
+
 # import uuidx
 # import datetime
 
@@ -63,6 +64,7 @@ order_menu_options = ui.initialize_Prompt_Completer_From_Menu("orderMenu")
 def prompt_order_menu():
     user_input = ui.prompt_User(prompt_text, order_menu_options)
     return user_input
+
 
 # Initialize basketMenu
 basketMenu = ui.import_Menu("basketMenu", "Basket")
@@ -220,11 +222,28 @@ def order_menu(state):
         elif user_input == "return":
             break
 
+
 # Basket menu options if-else
 def basket_menu(state):
     while True:
         ui.clear_Term()
         print_basket_menu()
         user_input = prompt_basket_menu()
-        if user_input == "return":
+        if user_input == "show":
+            ui.clear_Term()
+            if state["transaction"] == []:
+                ui.c_Print("THERE ARE NO TRANSACTIONS TO SHOW")
+                continue
+            ui.print_table(state["transaction"], "transaction", True)
+            user_input = int(ui.prompt_User("Which transaction #"))
+            while user_input not in range(len(state["transaction"])):
+                user_input = int(ui.prompt_User("Type a valid in range #"))
+            ui.clear_Term()
+            ui.print_basket_for_transaction(
+                state["basket"],
+                state["product"],
+                state["transaction"][user_input]["transaction_uuid"],
+            )
+            ui.prompt_User("Press Enter")
+        elif user_input == "return":
             break

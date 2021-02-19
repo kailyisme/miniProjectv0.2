@@ -155,3 +155,20 @@ def prompt_update_row(state, table_name, index):
         else:
             row[each] = user_input
     return row
+
+# Print basket for a transaction
+def print_basket_for_transaction(basket_table, product_table, transaction_uuid):
+    table = Table(title=f"Basket for {uuid.UUID(bytes=transaction_uuid)}")
+    table.add_column("product_id", justify="center", no_wrap=True)
+    table.add_column("Product name", justify="center", no_wrap=True)
+    table.add_column("Amount", justify="center", no_wrap=True)
+    for line in [line for line in basket_table if line["transaction_uuid"] == transaction_uuid]:
+        row = []
+        product_id = line["product_id"]
+        row.append(str(product_id))
+        for product in product_table:
+            if product["product_id"] == product_id:
+                row.append(str(product["product_name"]))
+        row.append(str(line["basket_amount"]))
+        table.add_row(*row)
+    c_Print(table)
