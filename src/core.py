@@ -2,8 +2,7 @@ import src.ui_handlers as ui
 import src.file_handlers as file_io
 import src.db_handlers as db
 import src.constants as constants
-import uuid
-
+# import uuidx
 # import datetime
 
 
@@ -63,6 +62,22 @@ order_menu_options = ui.initialize_Prompt_Completer_From_Menu("orderMenu")
 
 def prompt_order_menu():
     user_input = ui.prompt_User(prompt_text, order_menu_options)
+    return user_input
+
+# Initialize basketMenu
+basketMenu = ui.import_Menu("basketMenu", "Basket")
+
+
+def print_basket_menu():
+    ui.c_Print(basketMenu)
+
+
+# Initialize basketMenu prompt
+basket_menu_options = ui.initialize_Prompt_Completer_From_Menu("basketMenu")
+
+
+def prompt_basket_menu():
+    user_input = ui.prompt_User(prompt_text, basket_menu_options)
     return user_input
 
 
@@ -200,5 +215,16 @@ def order_menu(state):
             ui.prompt_User("Press Enter")
         elif user_input == "add":
             add_order(state)
+        elif user_input == "basket":
+            basket_menu(state)
         elif user_input == "return":
+            break
+
+# Basket menu options if-else
+def basket_menu(state):
+    while True:
+        ui.clear_Term()
+        print_basket_menu()
+        user_input = prompt_basket_menu()
+        if user_input == "return":
             break

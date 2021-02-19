@@ -1,4 +1,5 @@
 Option,Description
+show,Show basket for a transaction
 add,Add item to basket
 update,Update item on basket
 remove,Remove item from basket

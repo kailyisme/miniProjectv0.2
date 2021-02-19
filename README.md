@@ -39,7 +39,8 @@ On root of the project folder run
   - [x] Add uuid for order_id (transaction_id)
   - [x] View orders
   - [x] Add order function
-  - [ ] Basket menu
+  - [x] Basket menu
+    - [ ] Show basket for a transaction
     - [ ] Add basket entry
     - [ ] Update basket entry
     - [ ] Remove basket entry
