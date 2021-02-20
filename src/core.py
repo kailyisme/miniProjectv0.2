@@ -3,7 +3,7 @@ import src.file_handlers as file_io
 import src.db_handlers as db
 import src.constants as constants
 
-# import uuidx
+# import uuid
 # import datetime
 
 
@@ -88,7 +88,7 @@ conn = db.connection()
 
 # Initialize database
 state = {
-    table_name: db.select_all_from_table(conn, table_name)
+    table_name: list(db.select_all_from_table(conn, table_name))
     for table_name in constants.TABLE_NAMES
 }
 
