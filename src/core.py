@@ -187,6 +187,29 @@ def sub_menu(state, table_name):
             break
 
 
+# Add a basket to a transaction
+def add_basket(state, transaction_uuid):
+    basket_entry = {}
+    basket_entry["transaction_uuid"] = transaction_uuid
+    user_input = "yes"
+    while user_input == "yes":
+        ui.clear_Term()
+        ui.print_table(state["product"], "product", True)
+        product_index = ui.prompt_user_row_index(state["product"], "product")
+        basket_entry["product_id"] = state["product"][product_index]["product_id"]
+        ui.clear_Term()
+        ui.c_Print(f"How many {state['product'][product_index]['product_name']}?")
+        basket_entry["basket_amount"] = int(ui.prompt_User())
+        db.insert_into_table(conn, "basket", basket_entry)
+        state["basket"].append(db.get_highest_id(conn, "basket"))
+        ui.clear_Term()
+        ui.c_Print(f"Appended {state['basket'][-1]}")
+        user_input = ui.prompt_User(
+            "Would you like to add another product to the basket? (yes/no)",
+            yes_no_completer,
+        ).lower()
+
+
 def add_order(state):
     ui.clear_Term()
     new_row = ui.prompt_row_for_order(state["customer"], state["courier"])
@@ -198,7 +221,8 @@ def add_order(state):
     state["transaction"].append(db.get_most_recent_order(conn))
     ui.clear_Term()
     ui.c_Print(f"Appended {state['transaction'][-1]}")
-    ui.prompt_User("Press Enter")
+    if ui.prompt_User("Would you like to add a basket? (yes/no)", yes_no_completer).lower() == "yes":
+        add_basket(state, state["transaction"][-1]["transaction_uuid"])
 
 
 # Order menu options if-else
@@ -231,24 +255,13 @@ def show_basket(state):
     )
     ui.prompt_User("Press Enter")
 
-# Add to basket
+
+# Add to existing basket
 def add_to_basket(state):
-    basket_entry = {}
     ui.print_table(state["transaction"], "transaction", True)
     transaction_index = ui.prompt_user_row_index(state["transaction"], "transaction")
-    basket_entry["transaction_uuid"] = state["transaction"][transaction_index]["transaction_uuid"]
-    ui.clear_Term()
-    ui.print_table(state["product"], "product", True)
-    product_index = ui.prompt_user_row_index(state["product"], "product")
-    basket_entry["product_id"] = state["product"][product_index]["product_id"]
-    ui.clear_Term()
-    ui.c_Print(f"How many {state['product'][product_index]['product_name']}?")
-    basket_entry["basket_amount"] = int(ui.prompt_User())
-    db.insert_into_table(conn, "basket",  basket_entry)
-    state["basket"].append(db.get_highest_id(conn, "basket"))   
-    ui.clear_Term()
-    ui.c_Print(f"Appended {state['basket'][-1]}")
-    ui.prompt_User("Press Enter")
+    add_basket(state, state["transaction"][transaction_index]["transaction_uuid"])
+
 
 # Basket menu options if-else
 def basket_menu(state):
