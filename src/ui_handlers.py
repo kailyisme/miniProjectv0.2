@@ -114,6 +114,14 @@ def print_table(table_to_print, table_name, enum=False, keys=[]):
     c_Print(table)
 
 
+# Prompt User for index in table
+def prompt_user_row_index(table, prompt_text="row"):
+    row = int(prompt_User(f"Which {prompt_text} #"))
+    while row not in range(len(table)):
+        row = int(prompt_User(f"Type a valid {prompt_text} #"))
+    return row
+
+
 # Prompt user for row details
 def prompt_row_wo_refs(table_name):
     keys = constants.get_keys(table_name)
@@ -131,14 +139,10 @@ def prompt_row_wo_refs(table_name):
 def prompt_row_for_order(customer_table, courier_table):
     row = {}
     print_table(customer_table, "customer", True)
-    row["customer_index"] = None
-    while row["customer_index"] not in range(len(customer_table)):
-        row["customer_index"] = int(prompt_User("Which customer #"))
+    row["customer_index"] = prompt_user_row_index(customer_table, "customer")
     clear_Term()
     print_table(courier_table, "courier", True)
-    row["courier_index"] = None
-    while row["courier_index"] not in range(len(courier_table)):
-        row["courier_index"] = int(prompt_User("Which courier #"))
+    row["courier_index"] = prompt_user_row_index(courier_table, "courier")
     return row
 
 
@@ -181,5 +185,7 @@ def print_basket_for_transaction(basket_table, product_table, transaction_uuid):
         x_amount = line["basket_amount"]
         basket_price += x_amount * x_price
         table_rows.append(row)
-    table_rows.append({f"{keys[2]}": "BASKET PRICE/SUM:", f"{keys[3]}": str(basket_price)})
+    table_rows.append(
+        {f"{keys[2]}": "BASKET PRICE/SUM:", f"{keys[3]}": str(basket_price)}
+    )
     print_table(table_rows, title, False, keys)

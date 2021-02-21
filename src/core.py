@@ -222,6 +222,17 @@ def order_menu(state):
         elif user_input == "return":
             break
 
+# Show basket
+def show_basket(state):
+    ui.print_table(state["transaction"], "transaction", True)
+    user_input = ui.prompt_user_row_index(state["transaction"], "transaction")
+    ui.clear_Term()
+    ui.print_basket_for_transaction(
+        state["basket"],
+        state["product"],
+        state["transaction"][user_input]["transaction_uuid"],
+    )
+    ui.prompt_User("Press Enter")
 
 # Basket menu options if-else
 def basket_menu(state):
@@ -234,16 +245,6 @@ def basket_menu(state):
             if state["transaction"] == []:
                 ui.c_Print("THERE ARE NO TRANSACTIONS TO SHOW")
                 continue
-            ui.print_table(state["transaction"], "transaction", True)
-            user_input = int(ui.prompt_User("Which transaction #"))
-            while user_input not in range(len(state["transaction"])):
-                user_input = int(ui.prompt_User("Type a valid in range #"))
-            ui.clear_Term()
-            ui.print_basket_for_transaction(
-                state["basket"],
-                state["product"],
-                state["transaction"][user_input]["transaction_uuid"],
-            )
-            ui.prompt_User("Press Enter")
+            show_basket(state)
         elif user_input == "return":
             break
