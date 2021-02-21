@@ -1,8 +1,15 @@
 # mini_project v2
 Simple program to manage orders in food retail environment
-<br/>
-<br/>
+</br>
+</br>
 ## To start
+Make sure you have [Python](https://www.python.org/downloads/) and [Docker](https://docs.docker.com/get-docker/) installed
+
+* If on Windows double click "start.bat" to run
+</br>
+</br>
+## For Power Users
+
 Add .env file to run with the following details
 - MYSQL_HOST (address to MySQL server)
 - MYSQL_PORT (port to MySQL Server; 3306 default)
@@ -12,13 +19,15 @@ Add .env file to run with the following details
 
 On root of the project folder run
 * 'python -m venv .venv'
+* On windows console/command line:
+  * '.venv\Scripts\activate.bat'
 * On windows powershell:
-  * '.\.venv\Scripts\Activate.ps1'
+  * '.\\.venv\Scripts\Activate.ps1'
 * 'python -m pip install -r .\requirements.txt'
 * 'docker-compose up -d'
 * 'python -m src'
-<br/>
-<br/>
+</br>
+</br>
 
 ## ToDo
 - [x] Separate logic from file_handlers and UI
@@ -47,6 +56,9 @@ On root of the project folder run
   - [ ] Change order status
   - [ ] Update order details
   - [ ] Remove order
+- [x] Quick first setup (start.bat) with a batch file
+- [ ] Show orders for a specific date
+  - [ ] Show a basket an order under a specific date
 - [ ] Separate menu's logic by file
 - [x] Save function / export DB in CSV format
 - [ ] Load function / import DB in CSV format

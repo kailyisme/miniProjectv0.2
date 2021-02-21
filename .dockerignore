@@ -4,3 +4,4 @@
 __pycache__
 trying.py
 docker-compose.yml
+*.bat
