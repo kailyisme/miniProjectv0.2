@@ -161,16 +161,25 @@ def prompt_update_row(state, table_name, index):
 # Print basket for a transaction
 def print_basket_for_transaction(basket_table, product_table, transaction_uuid):
     title = f"Basket for {uuid.UUID(bytes=transaction_uuid)}"
-    keys = ["product_id", "Product name", "Amount"]
+    keys = ["product_id", "Product name", "Amount", "Product price"]
     table_rows = []
+    basket_price = 0
     for line in [
         line for line in basket_table if line["transaction_uuid"] == transaction_uuid
     ]:
         row = {}
-        row[keys[0]] = str(line["product_id"])
+        x_price = 0
+        x_amount = 0
+        row["product_id"] = str(line["product_id"])
         for product in product_table:
             if product["product_id"] == line["product_id"]:
-                row[keys[1]] = str(product["product_name"])
-        row[keys[2]] = str(line["basket_amount"])
+                row["Product name"] = str(product["product_name"])
+                row["Product price"] = str(product["product_price"])
+                x_price = product["product_price"]
+                break
+        row["Amount"] = str(line["basket_amount"])
+        x_amount = line["basket_amount"]
+        basket_price += x_amount * x_price
         table_rows.append(row)
+    table_rows.append({f"{keys[2]}": "BASKET PRICE/SUM:", f"{keys[3]}": str(basket_price)})
     print_table(table_rows, title, False, keys)
