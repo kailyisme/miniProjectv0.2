@@ -98,7 +98,7 @@ def select_all_from_table(conn, table_name):
 
 
 # Add row to table in DB
-def insert_into_table(conn, table_name, values):
+def insert_into_table(conn, table_name, values: dict):
     table_keys = list(values.keys())
     vars_amount = ""
     for each in table_keys:

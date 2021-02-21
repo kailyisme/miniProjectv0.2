@@ -41,7 +41,7 @@ On root of the project folder run
   - [x] Add order function
   - [x] Basket menu
     - [x] Show basket for a transaction
-    - [ ] Add basket entry
+    - [x] Add basket entry
     - [ ] Update basket entry
     - [ ] Remove basket entry
   - [ ] Change order status
