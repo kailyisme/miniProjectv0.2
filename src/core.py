@@ -138,9 +138,7 @@ def add_row_to_table(table_name):
 def update_row_on_table(table_name):
     ui.clear_Term()
     ui.print_table(state[table_name], table_name, True)
-    row_index = None
-    while not row_index in range(len(state[table_name])):
-        row_index = int(ui.prompt_User("Which row number would you like to update"))
+    row_index = ui.prompt_user_row_index(state[table_name], table_name)
     ui.clear_Term()
     ui.c_Print(f"Please input new details for {state[table_name][row_index]}")
     new_row = ui.prompt_update_row(state, table_name, row_index)
@@ -155,9 +153,7 @@ def update_row_on_table(table_name):
 def remove_row_from_table(table_name):
     ui.clear_Term()
     ui.print_table(state[table_name], table_name, True)
-    row_index = None
-    while not row_index in range(len(state[table_name])):
-        row_index = int(ui.prompt_User("Which row number would you like to remove"))
+    row_index = ui.prompt_user_row_index(state[table_name], table_name)
     ui.clear_Term()
     row_id = state[table_name][row_index][f"{table_name}_id"]
     ui.c_Print(
@@ -222,6 +218,7 @@ def order_menu(state):
         elif user_input == "return":
             break
 
+
 # Show basket
 def show_basket(state):
     ui.print_table(state["transaction"], "transaction", True)
@@ -233,6 +230,7 @@ def show_basket(state):
         state["transaction"][user_input]["transaction_uuid"],
     )
     ui.prompt_User("Press Enter")
+
 
 # Basket menu options if-else
 def basket_menu(state):
