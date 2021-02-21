@@ -5,10 +5,23 @@ Simple program to manage orders in food retail environment
 ## To start
 Make sure you have [Python](https://www.python.org/downloads/) and [Docker](https://docs.docker.com/get-docker/) installed
 
-* If on Windows double click "start.bat" to run
+On Windows
+* Double click "start.bat" to run
+
+Otherwise follow instructions below
 </br>
 </br>
-## For Power Users
+
+## How to use
+* Follow the prompts on screen
+* Type a command and press enter to submit
+* The list of possible commands are listed on the left hand side of the printed tables
+* To auto complete a command press tab to go through the possible commands
+
+This program uses a MySQL database for data persistence and searching engine. It's not necessary to save on exit.
+</br>
+</br>
+## For Power Users/Other OS than windows
 
 Add .env file to run with the following details
 - MYSQL_HOST (address to MySQL server)
