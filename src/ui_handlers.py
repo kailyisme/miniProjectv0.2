@@ -189,3 +189,7 @@ def print_basket_for_transaction(basket_table, product_table, transaction_uuid):
         {f"{keys[2]}": "BASKET PRICE/SUM:", f"{keys[3]}": str(basket_price)}
     )
     print_table(table_rows, title, False, keys)
+
+# Format and print a single row in a table format
+def format_print_row(title, row):
+    print_table([row], title, False, row.keys())

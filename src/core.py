@@ -170,7 +170,7 @@ def add_row_to_table(state, table_name):
     db.insert_into_table(conn, table_name, new_row)
     state[table_name].append(db.get_highest_id(conn, table_name))
     ui.clear_Term()
-    ui.c_Print(f"Appended {state[table_name][-1]}")
+    ui.format_print_row("Appended", state[table_name][-1])
     ui.prompt_User("Press Enter")
     return state
 
@@ -186,7 +186,7 @@ def update_row_on_table(state, table_name):
     db.update_row_on_table(conn, table_name, new_row, row_id)
     state[table_name][row_index] = db.retrieve_row_for_id(conn, table_name, row_id)
     ui.clear_Term()
-    ui.c_Print(f"Updated row {state[table_name][row_index]}")
+    ui.format_print_row("Updated", state[table_name][row_index])
     ui.prompt_User("Press Enter")
     return state
 
@@ -204,7 +204,7 @@ def remove_row_from_table(state, table_name):
     if ui.prompt_User("Yes/No", yes_no_completer) == "yes":
         ui.clear_Term()
         db.delete_row_for_id(conn, table_name, row_id)
-        ui.c_Print("Removed ", state[table_name].pop(row_index))
+        ui.format_print_row("Removed", state[table_name].pop(row_index))
         ui.prompt_User("Press Enter")
     return state
 
@@ -245,7 +245,7 @@ def add_basket(state, transaction_uuid):
         db.insert_into_table(conn, "basket", basket_entry)
         state["basket"].append(db.get_highest_id(conn, "basket"))
         ui.clear_Term()
-        ui.c_Print(f"Appended {state['basket'][-1]}")
+        ui.format_print_row("Appended", state['basket'][-1])
         user_input = ui.prompt_User(
             "Would you like to add another product to the basket? (yes/no)",
             yes_no_completer,
@@ -263,7 +263,7 @@ def add_order(state):
     )
     state["transaction"].append(db.get_most_recent_order(conn))
     ui.clear_Term()
-    ui.c_Print(f"Appended {state['transaction'][-1]}")
+    ui.format_print_row("Appended", state['transaction'][-1])
     if (
         ui.prompt_User(
             "Would you like to add a basket? (yes/no)", yes_no_completer
@@ -288,7 +288,7 @@ def change_order_status(state):
     db.update_row_on_table(conn, "transaction", new_status, transaction_uuid, True)
     state["transaction"][transaction_index] = db.retrieve_row_for_id(conn, "transaction", transaction_uuid, True)
     ui.clear_Term()
-    ui.c_Print(f"Updated: {state['transaction'][transaction_index]}")
+    ui.format_print_row("Updated", state['transaction'][transaction_index])
     ui.prompt_User("Press Enter")
     return state
 
