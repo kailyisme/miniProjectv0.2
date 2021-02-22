@@ -28,6 +28,4 @@ def write_Table(name_Of_Table: str, table_in_list: list, table_Headers):
 # Save database
 def save_state(state):
     for table_name in state.keys():
-        write_Table(
-            table_name, state[table_name], constants.get_keys(table_name)
-        )
+        write_Table(table_name, state[table_name], constants.get_keys(table_name))

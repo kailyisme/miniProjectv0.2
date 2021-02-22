@@ -1,3 +1,5 @@
+# GOOD LUCK TO EVERYONE ON THEIR PRESENTATION!!! <3
+
 # mini_project v2
 Simple program to manage orders in food retail environment
 </br>

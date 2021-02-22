@@ -190,6 +190,7 @@ def print_basket_for_transaction(basket_table, product_table, transaction_uuid):
     )
     print_table(table_rows, title, False, keys)
 
+
 # Format and print a single row in a table format
 def format_print_row(title, row):
     print_table([row], title, False, row.keys())

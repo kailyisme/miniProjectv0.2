@@ -3,6 +3,7 @@ import src.file_handlers as file_io
 import src.db_handlers as db
 import src.constants as constants
 import ast
+
 # import uuid
 # import datetime
 
@@ -82,6 +83,7 @@ def prompt_basket_menu():
     user_input = ui.prompt_User(prompt_text, basket_menu_options)
     return user_input
 
+
 # Initialize order statuses completer
 order_status_options = ui.initialize_Prompt_Completer(constants.TRANSACTION_STATUSES)
 
@@ -92,6 +94,7 @@ def print_statuses_options():
     for status in constants.TRANSACTION_STATUSES:
         table_to_print.append({"Status": status})
     ui.print_table(table_to_print, table_name, False, ["Status"])
+
 
 # Initialize MySQL DB connection
 conn = db.connection()
@@ -245,7 +248,7 @@ def add_basket(state, transaction_uuid):
         db.insert_into_table(conn, "basket", basket_entry)
         state["basket"].append(db.get_highest_id(conn, "basket"))
         ui.clear_Term()
-        ui.format_print_row("Appended", state['basket'][-1])
+        ui.format_print_row("Appended", state["basket"][-1])
         user_input = ui.prompt_User(
             "Would you like to add another product to the basket? (yes/no)",
             yes_no_completer,
@@ -263,7 +266,7 @@ def add_order(state):
     )
     state["transaction"].append(db.get_most_recent_order(conn))
     ui.clear_Term()
-    ui.format_print_row("Appended", state['transaction'][-1])
+    ui.format_print_row("Appended", state["transaction"][-1])
     if (
         ui.prompt_User(
             "Would you like to add a basket? (yes/no)", yes_no_completer
@@ -272,6 +275,7 @@ def add_order(state):
     ):
         state = add_basket(state, state["transaction"][-1]["transaction_uuid"])
     return state
+
 
 # Change an order status
 def change_order_status(state):
@@ -286,11 +290,14 @@ def change_order_status(state):
         new_status = ui.prompt_User("Type a valid status", order_status_options)
     new_status = {"transaction_status": new_status}
     db.update_row_on_table(conn, "transaction", new_status, transaction_uuid, True)
-    state["transaction"][transaction_index] = db.retrieve_row_for_id(conn, "transaction", transaction_uuid, True)
+    state["transaction"][transaction_index] = db.retrieve_row_for_id(
+        conn, "transaction", transaction_uuid, True
+    )
     ui.clear_Term()
-    ui.format_print_row("Updated", state['transaction'][transaction_index])
+    ui.format_print_row("Updated", state["transaction"][transaction_index])
     ui.prompt_User("Press Enter")
     return state
+
 
 # Order menu options if-else
 def order_menu(state):

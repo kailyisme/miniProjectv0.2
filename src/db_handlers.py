@@ -118,8 +118,10 @@ def replace_into_table(conn, table_name, values: dict):
     for each in table_keys:
         vars_amount += "%s,"
     vars_amount = vars_amount[:-1]
-    print(f"REPLACE INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})",
-        tuple(values[key] for key in table_keys))
+    print(
+        f"REPLACE INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})",
+        tuple(values[key] for key in table_keys),
+    )
     auto_commit(
         conn,
         f"REPLACE INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})",
@@ -160,7 +162,9 @@ def retrieve_row_for_id(conn, table_name, id, is_uuid=False):
         id_append = "_uuid"
         # id = uuid.UUID(bytes=id).hex
         # id = f"unhex('{id}')"
-    return query(conn, f"SELECT * FROM {table_name} WHERE {table_name}{id_append} = %s", id)[0]
+    return query(
+        conn, f"SELECT * FROM {table_name} WHERE {table_name}{id_append} = %s", id
+    )[0]
 
 
 def delete_row_for_id(conn, table_name, id, is_uuid=False):
