@@ -4,7 +4,7 @@ import src.constants as constants
 # Read table from CSV file
 def read_Table(name_Of_Table: str):
     the_table = []
-    path_Of_Table = f"data/{name_Of_Table}.csv"
+    path_Of_Table = f"to_import/{name_Of_Table}.csv"
     try:
         with open(path_Of_Table) as file:
             csv_Reader = csv.DictReader(file)

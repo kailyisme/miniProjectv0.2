@@ -111,6 +111,20 @@ def insert_into_table(conn, table_name, values: dict):
     )
 
 
+# Add row to table in DB
+def replace_into_table(conn, table_name, values: dict):
+    table_keys = list(values.keys())
+    vars_amount = ""
+    for each in table_keys:
+        vars_amount += "%s,"
+    vars_amount = vars_amount[:-1]
+    auto_commit(
+        conn,
+        f"REPLACE INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})",
+        tuple(values[key] for key in table_keys),
+    )
+
+
 def get_highest_id(conn, table_name):
     return query(
         conn, f"SELECT * FROM {table_name} ORDER BY {table_name}_id DESC LIMIT 1"

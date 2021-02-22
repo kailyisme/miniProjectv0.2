@@ -4,4 +4,5 @@ product,Access product list
 customer,Access customer list
 order,Access order menu
 save,Save DB to CSV
+load,Import DB from CSV
 exit,Exit

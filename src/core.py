@@ -87,10 +87,12 @@ def prompt_basket_menu():
 conn = db.connection()
 
 # Initialize database
-state = {
-    table_name: list(db.select_all_from_table(conn, table_name))
-    for table_name in constants.TABLE_NAMES
-}
+def init():
+    return {
+        table_name: list(db.select_all_from_table(conn, table_name))
+        for table_name in constants.TABLE_NAMES
+    }
+
 
 # Initialize yes/no completer
 yes_no_completer = ui.initialize_Prompt_Completer(["yes", "no"])
@@ -103,28 +105,52 @@ def save_option(state):
     ui.prompt_User("Press Enter")
 
 
-# Main menu options if-else
-def main_menu():
-    while True:
+def load_option(state):
+    ui.clear_Term()
+    ui.c_Print(
+        "Please save the files you would like to import in a folder with the name 'to_import' in the app folder"
+    )
+    ui.prompt_User("Press Enter when ready...")
+    temp_state = {
+        table_name: file_io.read_Table(table_name)
+        for table_name in constants.TABLE_NAMES
+    }
+    files_found = []
+    for table_name in constants.TABLE_NAMES:
+        if temp_state[table_name] != []:
+            skip = False
+            for key in constants.get_keys(table_name):
+                if key not in list(temp_state[table_name][0].keys()):
+                    skip = True
+                    break
+            if skip == True:
+                continue
+            ui.c_Print(f"Found {table_name}.csv")
+            files_found.append(table_name)
+    ui.c_Print(f"Found {len(files_found)} files")
+    # ui.c_Print(temp_state)
+    if (
+        ui.prompt_User(
+            "Are you sure you want to import these files? RISK OF ERASING OLD VALUES (yes/no)",
+            yes_no_completer,
+        ).lower()
+        == "yes"
+    ):
+        for table_name in files_found:
+            for entry in temp_state[table_name]:
+                row = {}
+                for key in constants.get_keys(table_name):
+                    if entry[key] != "" and entry[key] != None:
+                        row[key] = entry[key]
+                db.replace_into_table(conn, table_name, row)
+        state = init()
         ui.clear_Term()
-        print_Main_Menu()
-        user_input = prompt_Main_Menu()
-        if (
-            user_input == "courier"
-            or user_input == "product"
-            or user_input == "customer"
-        ):
-            sub_menu(state, user_input)
-        elif user_input == "order":
-            order_menu(state)
-        elif user_input == "save":
-            save_option(state)
-        elif user_input == "exit":
-            ui.clear_Term()
-            exit()
+        ui.c_Print("Imported!")
+        ui.prompt_User("Press Enter")
+    return state
 
 
-def add_row_to_table(table_name):
+def add_row_to_table(state, table_name):
     ui.clear_Term()
     ui.c_Print(f"Please input the following details for a new {table_name}")
     new_row = ui.prompt_row_wo_refs(table_name)
@@ -133,9 +159,10 @@ def add_row_to_table(table_name):
     ui.clear_Term()
     ui.c_Print(f"Appended {state[table_name][-1]}")
     ui.prompt_User("Press Enter")
+    return state
 
 
-def update_row_on_table(table_name):
+def update_row_on_table(state, table_name):
     ui.clear_Term()
     ui.print_table(state[table_name], table_name, True)
     row_index = ui.prompt_user_row_index(state[table_name], table_name)
@@ -148,9 +175,10 @@ def update_row_on_table(table_name):
     ui.clear_Term()
     ui.c_Print(f"Updated row {state[table_name][row_index]}")
     ui.prompt_User("Press Enter")
+    return state
 
 
-def remove_row_from_table(table_name):
+def remove_row_from_table(state, table_name):
     ui.clear_Term()
     ui.print_table(state[table_name], table_name, True)
     row_index = ui.prompt_user_row_index(state[table_name], table_name)
@@ -165,6 +193,7 @@ def remove_row_from_table(table_name):
         db.delete_row_for_id(conn, table_name, row_id)
         ui.c_Print("Removed ", state[table_name].pop(row_index))
         ui.prompt_User("Press Enter")
+    return state
 
 
 # Sub menu options if-else
@@ -178,13 +207,13 @@ def sub_menu(state, table_name):
             ui.print_table(state[table_name], table_name)
             ui.prompt_User("Press Enter")
         elif user_input == "add":
-            add_row_to_table(table_name)
+            state = add_row_to_table(state, table_name)
         elif user_input == "update":
-            update_row_on_table(table_name)
+            state = update_row_on_table(state, table_name)
         elif user_input == "remove":
-            remove_row_from_table(table_name)
+            state = remove_row_from_table(state, table_name)
         elif user_input == "return":
-            break
+            return state
 
 
 # Add a basket to a transaction
@@ -208,6 +237,7 @@ def add_basket(state, transaction_uuid):
             "Would you like to add another product to the basket? (yes/no)",
             yes_no_completer,
         ).lower()
+    return state
 
 
 def add_order(state):
@@ -221,8 +251,14 @@ def add_order(state):
     state["transaction"].append(db.get_most_recent_order(conn))
     ui.clear_Term()
     ui.c_Print(f"Appended {state['transaction'][-1]}")
-    if ui.prompt_User("Would you like to add a basket? (yes/no)", yes_no_completer).lower() == "yes":
-        add_basket(state, state["transaction"][-1]["transaction_uuid"])
+    if (
+        ui.prompt_User(
+            "Would you like to add a basket? (yes/no)", yes_no_completer
+        ).lower()
+        == "yes"
+    ):
+        state = add_basket(state, state["transaction"][-1]["transaction_uuid"])
+    return state
 
 
 # Order menu options if-else
@@ -236,11 +272,11 @@ def order_menu(state):
             ui.print_table(state["transaction"], "transaction")
             ui.prompt_User("Press Enter")
         elif user_input == "add":
-            add_order(state)
+            state = add_order(state)
         elif user_input == "basket":
-            basket_menu(state)
+            state = basket_menu(state)
         elif user_input == "return":
-            break
+            return state
 
 
 # Show basket
@@ -261,6 +297,7 @@ def add_to_basket(state):
     ui.print_table(state["transaction"], "transaction", True)
     transaction_index = ui.prompt_user_row_index(state["transaction"], "transaction")
     add_basket(state, state["transaction"][transaction_index]["transaction_uuid"])
+    return state
 
 
 # Basket menu options if-else
@@ -280,6 +317,29 @@ def basket_menu(state):
             if state["transaction"] == []:
                 ui.c_Print("THERE ARE NO TRANSACTIONS TO SHOW")
                 continue
-            add_to_basket(state)
+            state = add_to_basket(state)
         elif user_input == "return":
-            break
+            return state
+
+
+# Main menu options if-else
+def main_menu(state):
+    while True:
+        ui.clear_Term()
+        print_Main_Menu()
+        user_input = prompt_Main_Menu()
+        if (
+            user_input == "courier"
+            or user_input == "product"
+            or user_input == "customer"
+        ):
+            state = sub_menu(state, user_input)
+        elif user_input == "order":
+            state = order_menu(state)
+        elif user_input == "save":
+            save_option(state)
+        elif user_input == "load":
+            state = load_option(state)
+        elif user_input == "exit":
+            ui.clear_Term()
+            exit()

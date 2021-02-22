@@ -74,7 +74,7 @@ On root of the project folder run
   - [ ] Show a basket an order under a specific date
 - [ ] Separate menu's logic by file
 - [x] Save function / export DB in CSV format
-- [ ] Load function / import DB in CSV format
+- [x] Load function / import DB in CSV format
 - [x] Commented code
 - [ ] Unit tested code
 - [ ] Add "deleted" field to courier, products and customer tables

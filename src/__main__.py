@@ -1,4 +1,6 @@
 import src.core as core
 
 # start
-core.main_menu()
+if __name__ == "__main__":
+    state = core.init()
+    core.main_menu(state)
