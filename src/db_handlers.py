@@ -118,6 +118,8 @@ def replace_into_table(conn, table_name, values: dict):
     for each in table_keys:
         vars_amount += "%s,"
     vars_amount = vars_amount[:-1]
+    print(f"REPLACE INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})",
+        tuple(values[key] for key in table_keys))
     auto_commit(
         conn,
         f"REPLACE INTO {table_name}({','.join(table_keys)}) VALUES ({vars_amount})",

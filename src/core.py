@@ -2,7 +2,7 @@ import src.ui_handlers as ui
 import src.file_handlers as file_io
 import src.db_handlers as db
 import src.constants as constants
-
+import ast
 # import uuid
 # import datetime
 
@@ -151,7 +151,10 @@ def load_option(state):
                 row = {}
                 for key in constants.get_keys(table_name):
                     if entry[key] != "" and entry[key] != None:
-                        row[key] = entry[key]
+                        if key.split("_")[1] == "uuid":
+                            row[key] = ast.literal_eval(entry[key])
+                        else:
+                            row[key] = entry[key]
                 db.replace_into_table(conn, table_name, row)
         state = init()
         ui.clear_Term()
