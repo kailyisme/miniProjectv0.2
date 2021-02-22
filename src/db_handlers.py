@@ -132,27 +132,42 @@ def get_highest_id(conn, table_name):
 
 
 # Update row in table in DB
-def update_row_on_table(conn, table_name, values, id):
+def update_row_on_table(conn, table_name, values, id, is_uuid=False):
     keys_to_update = list(values.keys())
     values_to_update = tuple(values[each] for each in keys_to_update)
     set_string = ""
     for key in keys_to_update:
         set_string += f"{key}=%s,"
     set_string = set_string[:-1]
+    id_append = "_id"
+    if is_uuid == True:
+        id_append = "_uuid"
+        id = uuid.UUID(bytes=id).hex
+        id = f"unhex('{id}')"
     auto_commit(
         conn,
-        f"UPDATE {table_name} SET {set_string} WHERE {table_name}_id = {id}",
+        f"UPDATE {table_name} SET {set_string} WHERE {table_name}{id_append} = {id}",
         values_to_update,
     )
 
 
 # Retrieve entry/row for {table_name}_id
-def retrieve_row_for_id(conn, table_name, id):
-    return query(conn, f"SELECT * FROM {table_name} WHERE {table_name}_id = %s", id)[0]
+def retrieve_row_for_id(conn, table_name, id, is_uuid=False):
+    id_append = "_id"
+    if is_uuid == True:
+        id_append = "_uuid"
+        # id = uuid.UUID(bytes=id).hex
+        # id = f"unhex('{id}')"
+    return query(conn, f"SELECT * FROM {table_name} WHERE {table_name}{id_append} = %s", id)[0]
 
 
-def delete_row_for_id(conn, table_name, id):
-    auto_commit(conn, f"DELETE FROM {table_name} WHERE {table_name}_id=%s", id)
+def delete_row_for_id(conn, table_name, id, is_uuid=False):
+    id_append = "_id"
+    if is_uuid == True:
+        id_append = "_uuid"
+        # id = uuid.UUID(bytes=id).hex
+        # id = f"unhex('{id}')"
+    auto_commit(conn, f"DELETE FROM {table_name} WHERE {table_name}{id_append}= %s", id)
 
 
 def new_order(conn, customer_id, courier_id):

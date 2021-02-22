@@ -66,7 +66,7 @@ On root of the project folder run
     - [x] Add basket entry
     - [ ] Update basket entry
     - [ ] Remove basket entry
-  - [ ] Change order status
+  - [x] Change order status
   - [ ] Update order details
   - [ ] Remove order
 - [x] Quick first setup (start.bat) with a batch file

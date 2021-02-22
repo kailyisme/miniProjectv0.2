@@ -82,6 +82,16 @@ def prompt_basket_menu():
     user_input = ui.prompt_User(prompt_text, basket_menu_options)
     return user_input
 
+# Initialize order statuses completer
+order_status_options = ui.initialize_Prompt_Completer(constants.TRANSACTION_STATUSES)
+
+# Initialize order statuses table
+def print_statuses_options():
+    table_name = "Order Status Options"
+    table_to_print = []
+    for status in constants.TRANSACTION_STATUSES:
+        table_to_print.append({"Status": status})
+    ui.print_table(table_to_print, table_name, False, ["Status"])
 
 # Initialize MySQL DB connection
 conn = db.connection()
@@ -260,6 +270,24 @@ def add_order(state):
         state = add_basket(state, state["transaction"][-1]["transaction_uuid"])
     return state
 
+# Change an order status
+def change_order_status(state):
+    ui.clear_Term()
+    ui.print_table(state["transaction"], "transaction", True)
+    transaction_index = ui.prompt_user_row_index(state["transaction"], "transaction")
+    transaction_uuid = state["transaction"][transaction_index]["transaction_uuid"]
+    ui.clear_Term()
+    print_statuses_options()
+    new_status = ui.prompt_User("Type status wanted", order_status_options)
+    while new_status not in constants.TRANSACTION_STATUSES:
+        new_status = ui.prompt_User("Type a valid status", order_status_options)
+    new_status = {"transaction_status": new_status}
+    db.update_row_on_table(conn, "transaction", new_status, transaction_uuid, True)
+    state["transaction"][transaction_index] = db.retrieve_row_for_id(conn, "transaction", transaction_uuid, True)
+    ui.clear_Term()
+    ui.c_Print(f"Updated: {state['transaction'][transaction_index]}")
+    ui.prompt_User("Press Enter")
+    return state
 
 # Order menu options if-else
 def order_menu(state):
@@ -275,6 +303,8 @@ def order_menu(state):
             state = add_order(state)
         elif user_input == "basket":
             state = basket_menu(state)
+        elif user_input == "change":
+            state = change_order_status(state)
         elif user_input == "return":
             return state
 
